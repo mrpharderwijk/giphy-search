@@ -1,6 +1,6 @@
 # Giphy Search
 
-This is a simple application that can be used to search Giphy's database. The application has been made ready to deploy to Heroku. A live demo can be viewed [here](https://google.com);
+This is a simple application that can be used to search Giphy's database. The application has been made ready to deploy to Heroku. A live demo can be viewed [here](https://ng-giphy.herokuapp.com/);
 
 ## Installation
 
@@ -48,6 +48,7 @@ Changes made in:
 
 ## TODO'S / Backlog
 
+- add all unit tests
 - add search options (GIF's or Stickers)
 - add sorting and ordering
 - add caching for better performance
