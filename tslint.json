@@ -1,0 +1,13 @@
+{
+  "rulesDirectory": [
+    "node_modules/codelyzer"
+  ],
+  "rules": {
+    "no-empty-interface": false
+  },
+  "extends": [
+    "tslint-defocus",
+    "./giphy-tslint.json",
+    "tslint-config-prettier"
+  ]
+}

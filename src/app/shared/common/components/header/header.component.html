@@ -1,0 +1,25 @@
+<header class="header">
+  <mat-toolbar color="primary">
+    <mat-toolbar-row class="header__row" *ngIf="!searchMode">
+      <span>{{ title }}</span>
+      <span class="header__spacer"></span>
+      <button
+        class="button button--icon header__search-button"
+        mat-button
+        [disabled]="loading"
+        (click)="searchMode = !searchMode"
+      >
+        <mat-icon class="button__icon" aria-hidden="false" aria-label="search icon">search</mat-icon>
+        <span class="button__label">search</span>
+      </button>
+    </mat-toolbar-row>
+    <mat-toolbar-row *ngIf="searchMode">
+      <app-giphy-search
+        class="h-width-full"
+        [loading]="loading"
+        (searchSubmitted)="giphySearchSubmitted($event)"
+        (searchClosed)="searchMode = false"
+      ></app-giphy-search>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</header>

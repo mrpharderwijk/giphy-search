@@ -1,0 +1,70 @@
+@function multiple-box-shadow($n) {
+  $value: '#{random(2000)}px #{random(2000)}px #FFF';
+
+  @for $i from 2 through $n {
+    $value: '#{$value}, #{random(2000)}px #{random(2000)}px #FFF';
+  }
+
+  @return unquote($value);
+}
+
+$base-size: 16px;
+$color-white: #fff;
+
+// Primary colors
+$brand-primary: #00a699;
+$brand-primary-light: #6bcbc3;
+
+$brand-secondary: #f36;
+
+// Black
+$color-black: #2b2b2b;
+
+// Blue
+$color-blue: #00b6f2;
+$color-blue-light: #6fbfe9;
+$color-blue-medium: #383c54;
+$color-blue-dark: #26293a;
+
+$color-bg-main: #121212;
+
+// Gray
+$color-gray: #e6e6e8; // A very light gray for backgrounds
+$color-gray-lighter: #f9fafb;
+$color-gray-light: #e0e0e0; // A slightly darker gray for borders, lines, strokes or dividers.
+$color-gray-medium: #767676; // A medium gray for subheadings and supporting body copy.
+$color-gray-dark: #72777a; // A dark grey for main headings, body copy and backgrounds.
+
+// Alias gray
+$color-bg: $color-bg-main;
+$color-border: $color-gray-light;
+$color-sub: $color-gray-medium;
+$color-heading: $color-gray-dark;
+
+$color-elevation-1: lighten($color-bg, 5%);
+$color-elevation-2: lighten($color-bg, 7%);
+$color-elevation-3: lighten($color-bg, 8%);
+$color-elevation-4: lighten($color-bg, 9%);
+$color-elevation-6: lighten($color-bg, 11%);
+$color-elevation-8: lighten($color-bg, 12%);
+$color-elevation-12: lighten($color-bg, 14%);
+$color-elevation-16: lighten($color-bg, 15%);
+$color-elevation-24: lighten($color-bg, 16%);
+
+// Shadows
+$shadows-small: multiple-box-shadow(700);
+$shadows-medium: multiple-box-shadow(200);
+$shadows-big: multiple-box-shadow(100);
+
+// Breakpoints
+$small: 600px;
+$phone-upper-boundary: $small;
+
+$medium: 900px;
+$tablet-portrait-upper-boundary: $medium;
+
+$large: 1200px;
+$tablet-landscape-upper-boundary: $large;
+
+$xlarge: 1800px;
+$desktop-upper-boundary: $xlarge;

@@ -1,0 +1,5 @@
+@import './../_variables.scss';
+
+@function toRem($pixels) {
+  @return $pixels / $base-size * 1rem;
+}

@@ -1,0 +1,47 @@
+<mat-form-field [appearance]="appearance" class="h-width-full">
+  <input
+    matInput
+    type="text"
+    [id]="inputGuid"
+    [name]="inputGuid"
+    [pattern]="pattern"
+    [placeholder]="placeholder"
+    [formControl]="formControlRef"
+    [disableControl]="disableControlRef"
+    [attr.cdkFocusInitial]="cdkFocusInitial"
+    [attr.autocomplete]="autoComplete"
+    [required]="required"
+    [selectOnClick]="selectOnClick"
+    [attr.readonly]="readOnly"
+    [attr.uppercase]="uppercase"
+    [attr.maxLength]="maxLength"
+    [minlength]="minLength"
+    (focus)="focus.emit(true)"
+    (focusout)="focusout.emit(true)"
+  />
+
+  <ng-content select="[custom-actions]"></ng-content>
+
+  <button
+    type="button"
+    *ngIf="!disableControlRef && formControlRef.value && formControlRef.value.length && enableClose"
+    mat-button
+    matSuffix
+    mat-icon-button
+    aria-label="Clear"
+    (click)="formControlRef.patchValue(null)"
+    tabindex="-1"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <mat-error *ngIf="formControlRef.hasError('incorrect') && !formControlRef.hasError('required')" i18n>
+    Fill in a {{ label }}
+  </mat-error>
+
+  <mat-error *ngIf="formControlRef.hasError('required')" i18n> A {{ label }} is <strong>required</strong> </mat-error>
+
+  <mat-error>
+    <ng-content select="[custom-errors]"></ng-content>
+  </mat-error>
+</mat-form-field>

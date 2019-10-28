@@ -1,0 +1,8 @@
+a {
+  color: $brand-primary;
+  transition: color .3s ease-in-out;
+
+  &:hover {
+    color: lighten($brand-primary, 25%);
+  }
+}

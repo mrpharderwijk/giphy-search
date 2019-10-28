@@ -1,0 +1,15 @@
+<app-header [loading]="loading" title="Giphy Search" (searchSubmitted)="setSearchQuery($event)"></app-header>
+
+<main role="main">
+  <div class="container">
+    <ng-container *ngIf="searchQuery">
+      <h2>Searching for: {{ searchQuery }}</h2>
+    </ng-container>
+
+    <ng-container *ngIf="!searchQuery">
+      <h2>Searching for trending Giphies</h2>
+    </ng-container>
+  </div>
+
+  <app-giphy-list [type]="giphyType" [searchQuery]="searchQuery"></app-giphy-list>
+</main>

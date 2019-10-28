@@ -1,0 +1,48 @@
+<div class="giphy-list container">
+  <ng-container *ngIf="paginationTotal">
+    <mat-paginator
+      class="giphy-list__paginator"
+      [length]="paginationTotal"
+      [pageSize]="paginationLimit"
+      [pageIndex]="paginationIndex"
+      (page)="paginationChanged($event)"
+    >
+    </mat-paginator>
+  </ng-container>
+
+  <div class="giphy-list__results row">
+    <div class="giphy-list__results__loader col-sm-12">
+      <mat-spinner *ngIf="loading" color="accent" diameter="50"></mat-spinner>
+    </div>
+
+    <div class="col-sm-12" *ngIf="!loading && (!giphies || !giphies.length)">
+      No results found for "{{ searchQuery }}"...
+    </div>
+
+    <ng-container *ngIf="!loading && giphies?.length">
+      <div class="col-sm-12 col-md-4 giphy-list__results__column" *ngFor="let giphy of giphies">
+        <mat-card class="giphy-card">
+          <mat-card-header>
+            <div mat-card-avatar class="giphy-card__avatar" *ngIf="giphy.user">
+              <img [src]="giphy.user.avatar_url" />
+            </div>
+            <mat-card-title>{{ giphy.title }}</mat-card-title>
+            <mat-card-subtitle>{{ giphy.import_datetime | dateAgo }}</mat-card-subtitle>
+          </mat-card-header>
+          <img mat-card-image [src]="giphy.images.fixed_height_downsampled.url" [alt]="giphy.title" />
+        </mat-card>
+      </div>
+    </ng-container>
+  </div>
+
+  <ng-container *ngIf="paginationTotal">
+    <mat-paginator
+      class="giphy-list__paginator"
+      [length]="paginationTotal"
+      [pageSize]="paginationLimit"
+      [pageIndex]="paginationIndex"
+      (page)="paginationChanged($event)"
+    >
+    </mat-paginator>
+  </ng-container>
+</div>

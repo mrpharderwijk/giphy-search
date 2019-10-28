@@ -1,0 +1,18 @@
+.giphy-search {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  width: 100%;
+
+  &__icon,
+  &__button {
+    flex: 0 1 auto;
+  }
+  &__input {
+    flex: 1 1 auto;
+  }
+  &__input,
+  &__button {
+    margin-left: 1rem;
+  }
+}

@@ -1,0 +1,26 @@
+<form class="h-width-full" [formGroup]="giphySearchForm" (ngSubmit)="submitSearchQuery()" novalidate>
+  <div class="giphy-search">
+    <mat-icon class="giphy-search__icon" aria-hidden="false" aria-label="search icon">search</mat-icon>
+    <div class="giphy-search__input">
+      <app-input-text
+        [formControlRef]="giphySearchForm.get('searchQuery')"
+        inputName="searchQuery"
+        i18n-placeholderRef="@@searchQuery"
+        [disableControlRef]="loading"
+        selectOnClick
+        cdkFocusInitial
+      >
+        <ng-container custom-errors>
+          <mat-error *ngIf="giphySearchForm.get('searchQuery').hasError('swearing')" i18n="@@input.swearing"
+            >Don't swear you monkey!</mat-error
+          >
+        </ng-container>
+      </app-input-text>
+    </div>
+    <div class="giphy-search__button">
+      <button type="button" mat-icon-button aria-label="clear icon" (click)="closeSearch()">
+        <mat-icon>clear</mat-icon>
+      </button>
+    </div>
+  </div>
+</form>

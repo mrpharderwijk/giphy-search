@@ -1,0 +1,96 @@
+/**
+ * Please check variables for the breakpoints
+  $small: 600px;
+  $phone-upper-boundary: $small;
+
+  $medium: 900px;
+  $tablet-portrait-upper-boundary: $medium;
+
+  $large: 1200px;
+  $tablet-landscape-upper-boundary: $large;
+
+  $xlarge: 1800px;
+  $desktop-upper-boundary: $xlarge;
+ */
+@mixin respond-size($range) {
+
+  @if $range==phone-only {
+    @media (max-width: #{$phone-upper-boundary - 1}) {
+      @content;
+    }
+  }
+
+  @else if $range==tablet-portrait-up {
+    @media (min-width: $phone-upper-boundary) {
+      @content;
+    }
+  }
+
+  @else if $range==tablet-landscape-up {
+    @media (min-width: $tablet-portrait-upper-boundary) {
+      @content;
+    }
+  }
+
+  @else if $range==desktop-up {
+    @media (min-width: $tablet-landscape-upper-boundary) {
+      @content;
+    }
+  }
+
+  @else if $range==desktop-big-up {
+    @media (min-width: $desktop-upper-boundary) {
+      @content;
+    }
+  }
+
+  @else {
+    @media (min-width: $range) {
+      @content;
+    }
+  }
+}
+
+@mixin respond-max($range) {
+  @media (max-width: $range) {
+    @content;
+  }
+}
+
+@mixin respond-min($range) {
+  @media (min-width: $range) {
+    @content;
+  }
+}
+
+.hidden {
+  &--sm {
+    @include respond-size(phone-only) {
+      display: none !important;
+    }
+  }
+
+  &--m {
+    @include respond-size(tablet-portrait-up) {
+      display: none !important;
+    }
+  }
+
+  &--l {
+    @include respond-size(tablet-landscape-up) {
+      display: none !important;
+    }
+  }
+
+  &--xl {
+    @include respond-size(desktop-up) {
+      display: none !important;
+    }
+  }
+
+  &--xxl {
+    @include respond-size(desktop-big-up) {
+      display: none !important;
+    }
+  }
+}

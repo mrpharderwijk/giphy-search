@@ -1,0 +1,40 @@
+@import './../../../../../assets/styles/_variables';
+@import './../../../../../assets/styles/mixins/_calculations';
+
+.giphy-list {
+  &__paginator {
+    background-color: $color-elevation-6;
+    color: $color-white;
+    @media screen and (max-width: 429px) {
+      ::ng-deep .mat-paginator-page-size {
+        display: none;
+      }
+    }
+  }
+
+  &__results {
+    padding: toRem(48px) 0;
+    min-height: toRem(250px);
+
+    &__loader {
+      text-align: center;
+      .mat-spinner {
+        margin: 0 auto;
+      }
+    }
+    &__column {
+      margin-bottom: toRem(32px);
+    }
+  }
+}
+
+.giphy-card {
+  &__avatar {
+    img {
+      width: 100%;
+    }
+  }
+  .mat-card-image {
+    max-height: 200px;
+  }
+}
