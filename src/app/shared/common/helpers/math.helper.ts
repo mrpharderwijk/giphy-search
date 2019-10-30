@@ -5,16 +5,7 @@ export class MathHelper {
    * @param {number} scale decimals behind the comma
    */
   static roundNumber(num: number, scale: number): number {
-    if (!`${num}`.includes('e')) {
-      return +`${Math.round(Number(`${num}e+${scale}`))}e-${scale}`;
-    }
-    const arr = `${num}`.split('e');
-    let sig = '';
-
-    if (+arr[1] + scale > 0) {
-      sig = '+';
-    }
-    return +Math.round(Number(`${+arr[0]}e${sig + (+arr[1] + scale)})e-${scale}`));
+    return +`${Math.round(Number(`${num}e+${scale}`))}e-${scale}`;
   }
 
   /**

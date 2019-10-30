@@ -43,7 +43,7 @@ export class DateAgoPipe implements PipeTransform {
    * @param intervalKey
    * @param plural
    */
-  getKey(intervalKey, plural = false) {
+  getKey(intervalKey: string, plural = false) {
     switch (intervalKey) {
       case 'year':
         return !plural ? 'year' : 'years';

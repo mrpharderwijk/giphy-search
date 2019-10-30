@@ -17,7 +17,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { GiphyByQueryMock, GiphyTrendingMock } from '../../../mocks';
 import { GiphyService } from '../../../services/giphy.service';
 
-fdescribe('GiphyListComponent', () => {
+describe('GiphyListComponent', () => {
   let component: GiphyListComponent;
   let fixture: ComponentFixture<GiphyListComponent>;
   const fakeStateData = {
@@ -49,8 +49,8 @@ fdescribe('GiphyListComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
 
-    spyOn(component, 'resetPagination').and.returnValue({});
-    spyOn(component, 'retrieveGiphies').and.returnValue({});
+    spyOn(component, 'resetPagination');
+    spyOn(component, 'retrieveGiphies');
   });
 
   it('should create', () => {
@@ -69,27 +69,37 @@ fdescribe('GiphyListComponent', () => {
     expect(component.paginationTotal).toEqual(69196);
   });
 
-  // it('should reset the pagination', () => {
-  //   component.resetPagination();
-  //   expect(component.resetPagination).toHaveBeenCalled();
-  // });
+  xit('should reset the pagination', fakeAsync(() => {
+    component.resetPagination();
+    expect(component.resetPagination).toHaveBeenCalled();
+    console.log(component.paginationIndex);
+    console.log(component.paginationLimit);
+    console.log(component.paginationOffset);
+    console.log(component.paginationTotal);
 
-  // it('should retrieve Giphies by a given searchQuery', () => {
-  //   const changesObj = {
-  //     searchQuery: {
-  //       firstChange: false,
-  //       isFirstChange: () => false,
-  //       currentValue: 'test',
-  //       previousValue: 'bla',
-  //     },
-  //   };
-  //   component.ngOnChanges(changesObj);
-  //   expect(component.retrieveGiphies).toHaveBeenCalled();
-  //   expect(component.giphies[0].id).toEqual('gw3IWyGkC0rsazTi');
+    component.resetPagination();
+    console.log(component.paginationIndex);
+    console.log(component.paginationLimit);
+    console.log(component.paginationOffset);
+    console.log(component.paginationTotal);
+  }));
 
-  //   expect(component.paginationIndex).toEqual(0);
-  //   expect(component.paginationLimit).toEqual(15);
-  //   expect(component.paginationOffset).toEqual(0);
-  //   expect(component.paginationTotal).toEqual(7543);
-  // });
+  xit('should retrieve Giphies by a given searchQuery', () => {
+    const changesObj = {
+      searchQuery: {
+        firstChange: false,
+        isFirstChange: () => false,
+        currentValue: 'test',
+        previousValue: 'bla',
+      },
+    };
+    component.ngOnChanges(changesObj);
+    expect(component.retrieveGiphies).toHaveBeenCalled();
+    expect(component.giphies[0].id).toEqual('gw3IWyGkC0rsazTi');
+
+    expect(component.paginationIndex).toEqual(0);
+    expect(component.paginationLimit).toEqual(15);
+    expect(component.paginationOffset).toEqual(0);
+    expect(component.paginationTotal).toEqual(7543);
+  });
 });
