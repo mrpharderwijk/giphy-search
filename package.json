@@ -9,7 +9,7 @@
     "postinstall": "ng build --aot --prod",
     "pretty": "prettier --parser typescript --loglevel warn --write \"src/**/*.ts\"",
     "serve:local": "ng serve --aot --port 4500 --configuration=local --open",
-    "serve:prod": "ng serve --aot --port 4500 --configuration=prod",
+    "serve:prod": "ng serve --aot --port 4500 --configuration=production",
     "start": "node server.js",
     "test": "ng test --code-coverage --watch=true"
   },
