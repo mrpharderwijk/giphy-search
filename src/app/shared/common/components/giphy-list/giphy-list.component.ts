@@ -56,12 +56,6 @@ export class GiphyListComponent implements OnInit {
      */
     this.stateDataService.state.subscribe((stateData: StateData) => {
       this.fetching = stateData.fetching;
-      /**
-       * While fetching new giphies reset the pagination
-       */
-      if (this.fetching) {
-        this.resetPagination();
-      }
 
       /**
        * When the current searchQuery (from stateData) is different
@@ -71,6 +65,7 @@ export class GiphyListComponent implements OnInit {
        */
       if (this.searchQuery !== stateData.searchQuery) {
         this.searchQuery = stateData.searchQuery;
+        this.resetPagination();
         this.retrieveGiphies();
       }
 
