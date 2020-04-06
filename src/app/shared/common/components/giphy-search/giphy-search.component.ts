@@ -17,23 +17,47 @@ import { InputValidator } from '../../../forms/validators/input.validator';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GiphySearchComponent implements AfterViewChecked {
-  // On escape close the search
+  /**
+   * Handle the escape button. This will 'close' the search state
+   */
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler() {
     this.closeSearch();
   }
+
+  /**
+   * Loading the data
+   */
   @Input() loading: boolean;
+
+  /**
+   * Emitter when the search is submitted
+   */
   @Output() searchSubmitted: EventEmitter<string> = new EventEmitter(null);
+
+  /**
+   * Emitter when the search is in a `closed` state, meaning the input is
+   * not visible
+   */
   @Output() searchClosed: EventEmitter<boolean> = new EventEmitter(false);
 
+  /**
+   * The actual search form
+   */
   giphySearchForm: FormGroup;
 
   constructor(private _formBuilder: FormBuilder) {
+    /**
+     * Build up the form (reactive style)
+     */
     this.giphySearchForm = this._formBuilder.group({
       searchQuery: ['', InputValidator.refuseSwearing],
     });
   }
 
-  ngAfterViewChecked() {
+  /**
+   * Update the forms validity
+   */
+  ngAfterViewChecked(): void {
     this.giphySearchForm.updateValueAndValidity();
   }
 
@@ -41,7 +65,7 @@ export class GiphySearchComponent implements AfterViewChecked {
    * Emit an event so the parent knows the form
    * is submitted
    */
-  submitSearchQuery() {
+  submitSearchQuery(): void {
     if (!this.giphySearchForm.valid) {
       return;
     }
@@ -52,7 +76,11 @@ export class GiphySearchComponent implements AfterViewChecked {
       return;
     }
 
-    this.searchSubmitted.emit(this.giphySearchForm.get('searchQuery').value);
+    // Emit the new searchQuery up to it's parent
+    const value = this.giphySearchForm.get('searchQuery').value;
+    this.searchSubmitted.emit(value);
+
+    // Clean up the searchQuery value for future alterations
     this.giphySearchForm.get('searchQuery').setValue(null);
   }
 
@@ -60,7 +88,7 @@ export class GiphySearchComponent implements AfterViewChecked {
    * Emits an event so the parent knows the element
    * should be closed
    */
-  closeSearch() {
+  closeSearch(): void {
     this.searchClosed.emit(true);
   }
 }

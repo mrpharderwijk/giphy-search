@@ -13,6 +13,7 @@ export class StateDataService {
   defaultState = {
     fetching: false,
     giphyType: GIPHY_DEFAULT_TYPE,
+    giphies: [],
   };
 
   private _state = new BehaviorSubject<StateData>(this.defaultState);

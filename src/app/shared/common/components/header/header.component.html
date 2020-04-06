@@ -6,7 +6,7 @@
       <button
         class="button button--icon header__search-button"
         mat-button
-        [disabled]="loading"
+        [disabled]="fetching"
         (click)="searchMode = !searchMode"
       >
         <mat-icon class="button__icon" aria-hidden="false" aria-label="search icon">search</mat-icon>
@@ -16,7 +16,7 @@
     <mat-toolbar-row *ngIf="searchMode">
       <app-giphy-search
         class="h-width-full"
-        [loading]="loading"
+        [loading]="fetching"
         (searchSubmitted)="giphySearchSubmitted($event)"
         (searchClosed)="searchMode = false"
       ></app-giphy-search>

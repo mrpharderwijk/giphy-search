@@ -1,8 +1,8 @@
-import { Component, OnInit, Input, SimpleChange, OnChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GIFObject, MultiResponse } from 'giphy-api';
 import { GiphyService } from '../../../services/giphy.service';
 import { catchError } from 'rxjs/operators';
-import { EMPTY, Subscription } from 'rxjs';
+import { EMPTY } from 'rxjs';
 import {
   GIPHY_DEFAULT_TYPE,
   PAGINATION_LIMIT,
@@ -19,73 +19,76 @@ import { StateData } from '../../../models/state-data.model';
   templateUrl: './giphy-list.component.html',
   styleUrls: ['./giphy-list.component.scss'],
 })
-export class GiphyListComponent implements OnInit, OnChanges {
-  private _stateDataSubcription: Subscription;
+export class GiphyListComponent implements OnInit {
+  /**
+   * Determines if there is data fetching
+   */
+  fetching: boolean;
 
-  @Input() type: string = GIPHY_DEFAULT_TYPE;
-  @Input() title: string;
-  @Input() pubdate: string;
-  @Input() user: GIFObject['user'];
-  @Input() images: GIFObject['images'];
-  @Input() searchQuery: string;
-
-  // Some giphy API types
+  /**
+   * The giphies retrieved, used in the template
+   */
   giphies: GIFObject[];
-  loading: boolean;
 
-  // Pagination not added to state since it is used here only
+  /**
+   * Pagination state
+   */
   paginationIndex: number;
   paginationLimit: number;
   paginationOffset: number;
   paginationTotal: number;
 
-  constructor(private _giphyService: GiphyService, private _stateDataService: StateDataService) {}
+  /**
+   * The current searchQuery
+   */
+  searchQuery: string = null;
 
-  ngOnInit() {
-    // By default retrieve the trending items
-    this.resetPagination();
-    this.retrieveGiphies();
+  /**
+   * Type of giphy to retrieve
+   */
+  type: string = GIPHY_DEFAULT_TYPE;
 
-    // Subscribe on state changes
-    this._stateDataSubcription = this._stateDataService.state.subscribe((stateData: StateData) => {
-      if (!stateData) {
-        return;
+  constructor(private giphyService: GiphyService, private stateDataService: StateDataService) {}
+
+  ngOnInit(): void {
+    /**
+     * Subscribe on state for query purposes
+     */
+    this.stateDataService.state.subscribe((stateData: StateData) => {
+      this.fetching = stateData.fetching;
+      /**
+       * While fetching new giphies reset the pagination
+       */
+      if (this.fetching) {
+        this.resetPagination();
       }
 
-      // While fetching set the loading variable
-      this.loading = stateData.fetching;
+      /**
+       * When the current searchQuery (from stateData) is different
+       * from the previous searchQuery:
+       *
+       * set the new searchQuery as the current
+       */
+      if (this.searchQuery !== stateData.searchQuery) {
+        this.searchQuery = stateData.searchQuery;
+        this.retrieveGiphies();
+      }
+
+      /**
+       * Define all other template driven variables
+       */
+      this.giphies = stateData.giphies;
+      this.paginationIndex = PAGINATION_INDEX;
+      this.paginationLimit = stateData.paginationLimit;
+      this.paginationOffset = stateData.paginationOffset;
+      this.paginationTotal = stateData.paginationTotal;
     });
-  }
-
-  ngOnDestroy() {
-    // Clean up subscriptions
-    if (this._stateDataSubcription) {
-      this._stateDataSubcription.unsubscribe();
-    }
-  }
-
-  ngOnChanges(changes: { [propName: string]: SimpleChange }) {
-    if (
-      changes &&
-      changes.searchQuery &&
-      changes.searchQuery.currentValue &&
-      changes.searchQuery.currentValue !== changes.searchQuery.previousValue
-    ) {
-      this.searchQuery = changes.searchQuery.currentValue;
-
-      // A new query should always reset the pagination
-      this.resetPagination();
-      this.retrieveGiphies();
-    }
   }
 
   /**
    * Determines what to retrieve, trending or byQuery
    */
   retrieveGiphies() {
-    // App will be fetching
-    this._stateDataService.addData({ fetching: true });
-
     // No searchQuery? Retrieve trending by default
     if (!this.searchQuery) {
       this.retrieveTrending();
@@ -97,37 +100,41 @@ export class GiphyListComponent implements OnInit, OnChanges {
   /**
    * Retrieve all trending GIF's or stickers
    */
-  retrieveTrending() {
+  retrieveTrending(): void {
+    // Define all options for the search
     const options = {
       type: this.type,
       limit: this.paginationLimit,
       offset: this.paginationOffset,
     };
 
-    this._giphyService
+    // Enable loading
+    this.stateDataService.addData({ fetching: true });
+
+    this.giphyService
       .fetchTrending(options)
       .pipe(
         catchError(() => {
-          // TODO: Maybe add some snackbar thingies here, to show the error
-          this._stateDataService.addData({ fetching: false });
+          // Disable loading
+          this.stateDataService.addData({ fetching: false });
           return EMPTY;
         }),
       )
       .subscribe((giphyResponse: MultiResponse) => {
-        this.giphies = giphyResponse.data;
-
-        // TODO: DRY
-        this.paginationLimit = giphyResponse.pagination.count;
-        this.paginationOffset = giphyResponse.pagination.offset;
-        this.paginationTotal = giphyResponse.pagination.total_count;
-        this._stateDataService.addData({ fetching: false });
+        this.stateDataService.addData({
+          fetching: false,
+          giphies: giphyResponse.data,
+          paginationLimit: giphyResponse.pagination.count,
+          paginationOffset: giphyResponse.pagination.offset,
+          paginationTotal: giphyResponse.pagination.total_count,
+        });
       });
   }
 
   /**
    * Retrieve items by search query
    */
-  retrieveByQuery() {
+  retrieveByQuery(): void {
     const options = {
       type: this.type,
       q: this.searchQuery,
@@ -135,22 +142,30 @@ export class GiphyListComponent implements OnInit, OnChanges {
       offset: this.paginationOffset,
     };
 
-    this._giphyService
+    // Enable loading
+    this.stateDataService.addData({ fetching: true });
+
+    this.giphyService
       .fetchByQuery(options)
       .pipe(
         catchError(() => {
-          this._stateDataService.addData({ fetching: false });
+          // Disable loading
+          this.stateDataService.addData({ fetching: false });
+
           return EMPTY;
         }),
       )
       .subscribe((giphyResponse: MultiResponse) => {
-        this.giphies = giphyResponse.data;
-
-        // TODO: DRY
-        this.paginationLimit = giphyResponse.pagination.count;
-        this.paginationOffset = giphyResponse.pagination.offset;
-        this.paginationTotal = giphyResponse.pagination.total_count;
-        this._stateDataService.addData({ fetching: false });
+        /**
+         * Define the state
+         */
+        this.stateDataService.addData({
+          fetching: false,
+          giphies: giphyResponse.data,
+          paginationLimit: giphyResponse.pagination.count,
+          paginationOffset: giphyResponse.pagination.offset,
+          paginationTotal: giphyResponse.pagination.total_count,
+        });
       });
   }
 

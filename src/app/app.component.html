@@ -1,4 +1,4 @@
-<app-header [loading]="loading" title="Giphy Search" (searchSubmitted)="setSearchQuery($event)"></app-header>
+<app-header title="Giphy Search"></app-header>
 
 <main role="main">
   <div class="container">
@@ -11,5 +11,5 @@
     </ng-container>
   </div>
 
-  <app-giphy-list [type]="giphyType" [searchQuery]="searchQuery"></app-giphy-list>
+  <app-giphy-list></app-giphy-list>
 </main>

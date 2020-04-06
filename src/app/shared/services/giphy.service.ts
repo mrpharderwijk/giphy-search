@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { GiphySearchOptions } from '../models/giphy-search-options.model';
 import { GiphyTrendingOptions } from '../models/giphy-trending-options.model';
-import { MultiResponse } from 'giphy-api';
+import * as giphyApi from 'giphy-api';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +16,7 @@ export class GiphyService {
    * Retrieves GIF's or Stickers for a certain query
    * @param searchOptions
    */
-  fetchByQuery(searchOptions: GiphySearchOptions): Observable<any> {
+  fetchByQuery(searchOptions: GiphySearchOptions): Observable<Object> {
     // add url with api key
     let url =
       `${environment.serviceUrls.giphy[searchOptions.type.toLowerCase()].search}` +
@@ -39,7 +39,7 @@ export class GiphyService {
    * Retrieves trending GIF's or stickers
    * @param searchOptions
    */
-  fetchTrending(searchOptions: GiphyTrendingOptions): Observable<any> {
+  fetchTrending(searchOptions: GiphyTrendingOptions): Observable<Object> {
     let url =
       `${environment.serviceUrls.giphy[searchOptions.type.toLowerCase()].trending}` +
       `?api_key=${environment.serviceUrls.giphy.apiKey}` +
