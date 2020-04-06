@@ -73,7 +73,6 @@ export class GiphyListComponent implements OnInit {
        * Define all other template driven variables
        */
       this.giphies = stateData.giphies;
-      this.paginationIndex = PAGINATION_INDEX;
       this.paginationLimit = stateData.paginationLimit;
       this.paginationOffset = stateData.paginationOffset;
       this.paginationTotal = stateData.paginationTotal;
