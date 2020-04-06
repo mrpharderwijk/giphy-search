@@ -5,6 +5,7 @@
     "build": "ng build --aot",
     "coverage": "http-server -c-1 -o -p 9875 ./coverage",
     "e2e": "ng e2e",
+    "lint": "ng lint",
     "ng": "ng",
     "postinstall": "ng build --aot --prod",
     "pretty": "prettier --parser typescript --loglevel warn --write \"src/**/*.ts\"",
